@@ -13,7 +13,9 @@ class BooksController < ApplicationController
 
   # GET /books/:id
   def show
-    json_response(@book, :ok)
+    Rails.cache.fetch("book:#{@book.id}", expires_in: 1.hours) do
+      json_response(@book, :ok)
+    end
   end
 
   # POST /books

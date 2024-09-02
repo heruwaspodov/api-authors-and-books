@@ -13,7 +13,9 @@ class AuthorsController < ApplicationController
 
   # GET /authors/:id
   def show
-    json_response(@author, :ok)
+    Rails.cache.fetch("author:#{@author.id}", expires_in: 1.hours) do
+      json_response(@author, :ok)
+    end
   end
 
   # POST /authors
